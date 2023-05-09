@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.DearDiary.MySplash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#FFFBFF</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/app_logo</item>
+        <item name="postSplashScreenTheme">@style/Theme.DearDiary</item>
+    </style>
+</resources>
