@@ -33,7 +33,6 @@ android {
         sourceCompatibility JavaVersion.VERSION_18
         targetCompatibility JavaVersion.VERSION_18
         coreLibraryDesugaringEnabled true
-
     }
     kotlinOptions {
         jvmTarget = '18'
