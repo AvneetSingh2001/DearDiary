@@ -63,7 +63,7 @@ fun Gallery(
                 Spacer(modifier = Modifier.width(spaceBetween))
             }
             if (remainingImages.value > 0) {
-
+                LastImageOverlay(imageSize = imageSize, remainingImages = remainingImages.value, imageShape = imageShape)
             }
         }
     }
