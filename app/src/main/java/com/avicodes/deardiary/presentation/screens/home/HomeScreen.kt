@@ -52,6 +52,7 @@ fun HomeScreen(
     diaries: Diaries,
     onMenuClicked: () -> Unit,
     navigateToWrite: () -> Unit,
+    navigateToWriteWithArgs: (String) -> Unit,
     onSignOutClicked: () -> Unit,
     drawerState: DrawerState,
 ) {
@@ -73,8 +74,8 @@ fun HomeScreen(
             floatingActionButton = {
                 FloatingActionButton(
                     onClick = navigateToWrite,
-                modifier = Modifier.padding(end = padding.calculateEndPadding(LayoutDirection.Ltr))
-                    ) {
+                    modifier = Modifier.padding(end = padding.calculateEndPadding(LayoutDirection.Ltr))
+                ) {
                     Icon(imageVector = Icons.Default.Edit, contentDescription = "New Diary Icon")
                 }
             },
@@ -82,7 +83,11 @@ fun HomeScreen(
                 padding = it
                 when (diaries) {
                     is RequestState.Success -> {
-                        HomeContent(paddingValues = it, diaryNotes = diaries.data, onClick = {})
+                        HomeContent(
+                            paddingValues = it,
+                            diaryNotes = diaries.data,
+                            onClick = navigateToWriteWithArgs
+                        )
                     }
 
                     is RequestState.Error -> {

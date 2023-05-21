@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,14 +29,19 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.avicodes.deardiary.data.repository.MongoDB
+import com.avicodes.deardiary.model.Mood
 import com.avicodes.deardiary.presentation.components.DisplayAlertDialog
 import com.avicodes.deardiary.presentation.screens.auth.AuthenticationScreen
 import com.avicodes.deardiary.presentation.screens.auth.AuthenticationViewModel
 import com.avicodes.deardiary.presentation.screens.home.HomeScreen
 import com.avicodes.deardiary.presentation.screens.home.HomeViewModel
+import com.avicodes.deardiary.presentation.screens.write.WriteScreen
+import com.avicodes.deardiary.presentation.screens.write.WriteViewModel
 import com.avicodes.deardiary.utils.Constants.APP_ID
 import com.avicodes.deardiary.utils.Constants.WRITE_SCREEN_ARGUMENT_KEY
 import com.avicodes.deardiary.utils.RequestState
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.rememberPagerState
 import com.stevdzasan.messagebar.rememberMessageBarState
 import com.stevdzasan.onetap.rememberOneTapSignInState
 import io.realm.kotlin.mongodb.App
@@ -45,7 +51,11 @@ import kotlinx.coroutines.withContext
 import java.lang.Exception
 
 @Composable
-fun SetUpNavGraph(startDestination: String, navController: NavHostController, onDataLoaded: () -> Unit) {
+fun SetUpNavGraph(
+    startDestination: String,
+    navController: NavHostController,
+    onDataLoaded: () -> Unit
+) {
     NavHost(navController = navController, startDestination = startDestination) {
         authenticationRoute(
             navigateToHome = {
@@ -62,9 +72,16 @@ fun SetUpNavGraph(startDestination: String, navController: NavHostController, on
                 navController.popBackStack()
                 navController.navigate(Screen.Authentication.route)
             },
-            onDataLoaded = onDataLoaded
+            onDataLoaded = onDataLoaded,
+            navigateToWriteWithArgs = {
+                navController.navigate(Screen.Write.passDiaryId(diaryId = it))
+            }
         )
-        writeRoute()
+        writeRoute(
+            onBackPressed = {
+                navController.popBackStack()
+            }
+        )
     }
 }
 
@@ -118,6 +135,7 @@ fun NavGraphBuilder.authenticationRoute(
 
 fun NavGraphBuilder.homeRoute(
     navigateToWrite: () -> Unit,
+    navigateToWriteWithArgs: (String) -> Unit,
     navigationToAuth: () -> Unit,
     onDataLoaded: () -> Unit
 ) {
@@ -131,12 +149,13 @@ fun NavGraphBuilder.homeRoute(
         }
 
         LaunchedEffect(key1 = diaries) {
-            if(diaries !is RequestState.Loading) {
+            if (diaries !is RequestState.Loading) {
                 onDataLoaded()
             }
         }
         val scope = rememberCoroutineScope()
         HomeScreen(
+            navigateToWriteWithArgs = navigateToWriteWithArgs,
             diaries = diaries,
             onMenuClicked = {
                 scope.launch {
@@ -176,7 +195,10 @@ fun NavGraphBuilder.homeRoute(
     }
 }
 
-fun NavGraphBuilder.writeRoute() {
+@OptIn(ExperimentalPagerApi::class)
+fun NavGraphBuilder.writeRoute(
+    onBackPressed: () -> Unit
+) {
     composable(
         route = Screen.Write.route,
         arguments = listOf(navArgument(name = WRITE_SCREEN_ARGUMENT_KEY) {
@@ -185,6 +207,27 @@ fun NavGraphBuilder.writeRoute() {
             defaultValue = null
         })
     ) {
+        val viewModel: WriteViewModel = viewModel()
+        val uiState = viewModel.uiState
+        val pagerState = rememberPagerState()
+        val pageNumber by remember {
+            derivedStateOf {
+                pagerState.currentPage
+            }
+        }
 
+        WriteScreen(
+            uiState = uiState,
+            pagerState = pagerState,
+            onBackPressed = onBackPressed,
+            onDeleteConfirmed = {},
+            onDescriptionChanged = {
+                viewModel.setDescription(description = it)
+            },
+            onTitleChanged = {
+                viewModel.setTitle(title = it)
+            },
+            moodName = { Mood.values()[pageNumber].name }
+        )
     }
 }

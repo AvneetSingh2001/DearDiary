@@ -1,5 +1,6 @@
 package com.avicodes.deardiary.data.repository
 
+import androidx.room.util.query
 import com.avicodes.deardiary.model.Diary
 import com.avicodes.deardiary.utils.Constants.APP_ID
 import com.avicodes.deardiary.utils.RequestState
@@ -10,6 +11,7 @@ import io.realm.kotlin.log.LogLevel
 import io.realm.kotlin.mongodb.App
 import io.realm.kotlin.mongodb.sync.SyncConfiguration
 import io.realm.kotlin.query.Sort
+import io.realm.kotlin.types.ObjectId
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -63,6 +65,19 @@ object MongoDB: MongoRepository {
             }
         } else {
             flow{  emit(RequestState.Error(UserNotAuthenticatedException())) }
+        }
+    }
+
+    override fun getSelectedDiary(diaryId: ObjectId): RequestState<Diary> {
+        return if(user != null) {
+            try {
+                val diary = realm.query<Diary>(query = "_id == $0", diaryId).find().first()
+                RequestState.Success(data = diary)
+            }catch (e: Exception) {
+                RequestState.Error(e)
+            }
+        } else {
+            RequestState.Error(UserNotAuthenticatedException())
         }
     }
 
