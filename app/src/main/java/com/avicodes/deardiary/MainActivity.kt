@@ -13,45 +13,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
-import com.avicodes.deardiary.data.repository.MongoDB
-import com.avicodes.deardiary.navigation.Screen
-import com.avicodes.deardiary.navigation.SetUpNavGraph
 import com.avicodes.deardiary.ui.theme.DearDiaryTheme
-import com.avicodes.deardiary.utils.Constants.APP_ID
 import io.realm.kotlin.mongodb.App
 
 class MainActivity : ComponentActivity() {
 
-    var keepSplashOpened = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        installSplashScreen().setKeepOnScreenCondition {
-            keepSplashOpened
-        }
-
-        WindowCompat.setDecorFitsSystemWindows(window, false)
+        installSplashScreen()
         setContent {
-            DearDiaryTheme {
-                val navController = rememberNavController()
-                SetUpNavGraph(
-                    startDestination = getStartDestination(),
-                    navController = navController,
-                    onDataLoaded = {
-                        keepSplashOpened = false
-                    }
-                )
+            DearDiaryTheme() {
+                
             }
         }
     }
 
-}
-
-private fun getStartDestination(): String {
-    val user = App.create(APP_ID).currentUser
-    return if (user != null && user.loggedIn) {
-        Screen.Home.route
-    } else {
-        Screen.Authentication.route
-    }
 }
 
