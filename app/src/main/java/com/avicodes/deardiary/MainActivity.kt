@@ -13,6 +13,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
+import com.avicodes.deardiary.navigation.Screen
+import com.avicodes.deardiary.navigation.SetUpNavGraph
 import com.avicodes.deardiary.ui.theme.DearDiaryTheme
 import io.realm.kotlin.mongodb.App
 
@@ -22,8 +24,15 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         installSplashScreen()
         setContent {
-            DearDiaryTheme() {
-                
+            DearDiaryTheme {
+
+                val navController = rememberNavController()
+
+                SetUpNavGraph(
+                    startDestination = Screen.Authentication.route,
+                    navController = navController
+                )
+
             }
         }
     }
