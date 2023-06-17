@@ -16,6 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import com.avicodes.deardiary.navigation.Screen
 import com.avicodes.deardiary.navigation.SetUpNavGraph
 import com.avicodes.deardiary.ui.theme.DearDiaryTheme
+import com.avicodes.deardiary.utils.Constants.APP_ID
 import io.realm.kotlin.mongodb.App
 
 class MainActivity : ComponentActivity() {
@@ -23,19 +24,22 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             DearDiaryTheme {
-
                 val navController = rememberNavController()
-
                 SetUpNavGraph(
-                    startDestination = Screen.Authentication.route,
+                    startDestination = getStartDestination(),
                     navController = navController
                 )
-
             }
         }
     }
 
 }
 
+private fun getStartDestination(): String {
+    val user = App.create(APP_ID).currentUser
+    return if (user != null && user.loggedIn) Screen.Home.route
+    else Screen.Authentication.route
+}
