@@ -1,7 +1,7 @@
 package com.avicodes.deardiary.data.repository
 
 import com.avicodes.deardiary.model.Diary
-import com.avicodes.deardiary.utils.RequestState
+import com.avicodes.deardiary.model.RequestState
 import kotlinx.coroutines.flow.Flow
 import org.mongodb.kbson.ObjectId
 import java.time.LocalDate

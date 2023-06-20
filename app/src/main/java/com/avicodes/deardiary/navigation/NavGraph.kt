@@ -19,7 +19,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.avicodes.deardiary.model.Diary
+import com.avicodes.deardiary.model.GalleryImage
 import com.avicodes.deardiary.model.Mood
 import com.avicodes.deardiary.presentation.components.DisplayAlertDialog
 import com.avicodes.deardiary.presentation.screens.auth.AuthenticationScreen
@@ -30,7 +30,8 @@ import com.avicodes.deardiary.presentation.screens.write.WriteScreen
 import com.avicodes.deardiary.presentation.screens.write.WriteViewModel
 import com.avicodes.deardiary.utils.Constants.APP_ID
 import com.avicodes.deardiary.utils.Constants.WRITE_SCREEN_ARGUMENT_KEY
-import com.avicodes.deardiary.utils.RequestState
+import com.avicodes.deardiary.model.RequestState
+import com.avicodes.deardiary.model.rememberGalleryState
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
 import com.stevdzasan.messagebar.rememberMessageBarState
@@ -38,7 +39,6 @@ import com.stevdzasan.onetap.rememberOneTapSignInState
 import io.realm.kotlin.mongodb.App
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.selects.select
 import kotlinx.coroutines.withContext
 
 @Composable
@@ -192,6 +192,7 @@ fun NavGraphBuilder.writeRoute(
         })
     ) {
         val pagerState = rememberPagerState()
+        val galleryState = rememberGalleryState()
         val viewModel: WriteViewModel = viewModel()
         val uiState = viewModel.uiState
         val context = LocalContext.current
@@ -247,6 +248,15 @@ fun NavGraphBuilder.writeRoute(
             },
             onDateTimeUpdated = { time ->
                 viewModel.updateDateTime(zonedDateTime = time)
+            },
+            galleryState = galleryState,
+            onImageSelect = {
+                galleryState.addImage(
+                    GalleryImage(
+                        it,
+                        ""
+                    )
+                )
             }
         )
     }

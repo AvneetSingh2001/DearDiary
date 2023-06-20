@@ -10,7 +10,7 @@ import com.avicodes.deardiary.data.repository.MongoDB
 import com.avicodes.deardiary.model.Diary
 import com.avicodes.deardiary.model.Mood
 import com.avicodes.deardiary.utils.Constants.WRITE_SCREEN_ARGUMENT_KEY
-import com.avicodes.deardiary.utils.RequestState
+import com.avicodes.deardiary.model.RequestState
 import com.avicodes.deardiary.utils.toRealmInstant
 import io.realm.kotlin.types.RealmInstant
 import kotlinx.coroutines.Dispatchers

@@ -1,4 +1,4 @@
-package com.avicodes.deardiary.utils
+package com.avicodes.deardiary.model
 
 sealed class RequestState<out T> {
     object Idle : RequestState<Nothing>()

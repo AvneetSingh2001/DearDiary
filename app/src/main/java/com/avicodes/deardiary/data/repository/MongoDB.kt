@@ -1,9 +1,8 @@
 package com.avicodes.deardiary.data.repository
 
-import android.security.keystore.UserNotAuthenticatedException
 import com.avicodes.deardiary.model.Diary
 import com.avicodes.deardiary.utils.Constants.APP_ID
-import com.avicodes.deardiary.utils.RequestState
+import com.avicodes.deardiary.model.RequestState
 import com.avicodes.deardiary.utils.toInstant
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query

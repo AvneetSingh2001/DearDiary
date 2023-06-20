@@ -1,5 +1,6 @@
 package com.avicodes.deardiary.presentation.screens.write
 
+import android.net.Uri
 import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.foundation.layout.*
@@ -21,7 +22,9 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.avicodes.deardiary.model.Diary
+import com.avicodes.deardiary.model.GalleryState
 import com.avicodes.deardiary.model.Mood
+import com.avicodes.deardiary.presentation.components.GalleryUploader
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
@@ -37,7 +40,9 @@ fun WriteContent(
     description: String,
     onDescriptionChanged: (String) -> Unit,
     paddingValues: PaddingValues,
-    onSaveClicked: (Diary) -> Unit
+    onSaveClicked: (Diary) -> Unit,
+    galleryState: GalleryState,
+    onImageSelect: (Uri) -> Unit
 ) {
     val scrollState = rememberScrollState()
     val context = LocalContext.current
@@ -131,6 +136,17 @@ fun WriteContent(
         }
 
         Column(verticalArrangement = Arrangement.Bottom) {
+            Spacer(modifier = Modifier.height(12.dp))
+            GalleryUploader(
+                galleryState = galleryState,
+                onAddClicked = {
+
+                },
+                onImageSelect = onImageSelect,
+                onImageClicked = {
+
+                }
+            )
             Spacer(modifier = Modifier.height(12.dp))
             Button(
                 modifier = Modifier

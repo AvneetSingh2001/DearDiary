@@ -14,13 +14,12 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import java.time.ZonedDateTime
 import com.avicodes.deardiary.R
 import com.avicodes.deardiary.data.repository.Diaries
 import com.avicodes.deardiary.presentation.screens.home.EmptyPage
 import com.avicodes.deardiary.presentation.screens.home.HomeContent
 import com.avicodes.deardiary.presentation.screens.home.HomeTopBar
-import com.avicodes.deardiary.utils.RequestState
+import com.avicodes.deardiary.model.RequestState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")

@@ -1,10 +1,12 @@
 package com.avicodes.deardiary.presentation.screens.write
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import com.avicodes.deardiary.model.Diary
+import com.avicodes.deardiary.model.GalleryState
 import com.avicodes.deardiary.model.Mood
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
@@ -23,6 +25,8 @@ fun WriteScreen(
     onBackPressed: () -> Unit,
     onSaveClicked: (Diary) -> Unit,
     onDateTimeUpdated: (ZonedDateTime) -> Unit,
+    galleryState: GalleryState,
+    onImageSelect: (Uri) -> Unit
 ) {
     LaunchedEffect(key1 = uiState.mood) {
         pagerState.scrollToPage(Mood.valueOf(uiState.mood.name).ordinal)
@@ -46,7 +50,9 @@ fun WriteScreen(
                 description = uiState.description,
                 onDescriptionChanged = onDescriptionChanged,
                 paddingValues = it,
-                onSaveClicked = onSaveClicked
+                onSaveClicked = onSaveClicked,
+                galleryState = galleryState,
+                onImageSelect = onImageSelect
             )
         }
     )
