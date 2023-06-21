@@ -4,6 +4,7 @@
 
     <application
         android:allowBackup="true"
+        android:name=".DiaryApp"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@drawable/app_logo"
@@ -16,6 +17,7 @@
             android:name=".MainActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize"
+            android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.DearDiary.MySplash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

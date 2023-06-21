@@ -12,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -96,7 +97,7 @@ fun NavGraphBuilder.authenticationRoute(
             loadingState = loadingState,
             oneTapSignInState = oneTapState,
             messageBarState = messageBarState,
-            onTokenIdReceived = { tokenId ->
+            onSuccessfulFirebaseSignIn = { tokenId ->
                 viewModel.signInWithMongoAtlas(
                     tokenId = tokenId,
                     onSuccess = {
@@ -108,6 +109,10 @@ fun NavGraphBuilder.authenticationRoute(
                         viewModel.setLoading(false)
                     }
                 )
+            },
+            onFailedFirebaseSignIn = { message ->
+                messageBarState.addError(message)
+                viewModel.setLoading(false)
             },
             onDialogDismissed = { message ->
                 messageBarState.addError(Exception(message))
@@ -192,9 +197,9 @@ fun NavGraphBuilder.writeRoute(
         })
     ) {
         val pagerState = rememberPagerState()
-        val galleryState = rememberGalleryState()
-        val viewModel: WriteViewModel = viewModel()
+        val viewModel: WriteViewModel = hiltViewModel()
         val uiState = viewModel.uiState
+        val galleryState = viewModel.galleryState
         val context = LocalContext.current
 
         val pageNumber by remember {
@@ -251,12 +256,18 @@ fun NavGraphBuilder.writeRoute(
             },
             galleryState = galleryState,
             onImageSelect = {
-                galleryState.addImage(
-                    GalleryImage(
-                        it,
-                        ""
-                    )
+                val type = context.contentResolver
+                    .getType(it)
+                    ?.split("/")
+                    ?.last()
+                    ?: "jpg"
+                viewModel.addImage(
+                    image = it,
+                    imageType = type
                 )
+            },
+            onImageDeleteClicked = {
+                galleryState.removeImage(it)
             }
         )
     }

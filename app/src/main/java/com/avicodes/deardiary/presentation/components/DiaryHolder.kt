@@ -1,5 +1,7 @@
 package com.avicodes.deardiary.presentation.components
 
+import android.net.Uri
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -17,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -25,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.avicodes.deardiary.model.Diary
 import com.avicodes.deardiary.model.Mood
 import com.avicodes.deardiary.ui.theme.Elevation
+import com.avicodes.deardiary.utils.fetchImagesFromFirebase
 import com.avicodes.deardiary.utils.toInstant
 import io.realm.kotlin.ext.realmListOf
 import java.time.Instant
@@ -36,8 +40,36 @@ import java.util.*
 fun DiaryHolder(diary: Diary, onClick: (String) -> Unit) {
     val localDensity = LocalDensity.current
     var galleryOpened by remember { mutableStateOf(false) }
-
+    var galleryLoading by remember { mutableStateOf(false) }
+    val downloadedImages = remember { mutableStateListOf<Uri>() }
     var componentHeight by remember { mutableStateOf(0.dp) }
+    val context = LocalContext.current
+
+    LaunchedEffect(key1 = galleryOpened) {
+        if (galleryOpened && downloadedImages.isEmpty()) {
+            galleryLoading = true
+            fetchImagesFromFirebase(
+                remoteImagePaths = diary.images,
+                onImageDownload = { image ->
+                    downloadedImages.add(image)
+                },
+                onImageDownloadFailed = {
+                    Toast.makeText(
+                        context,
+                        "Images not uploaded yet." +
+                                "Wait a little bit, or try uploading again.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    galleryLoading = false
+                    galleryOpened = false
+                },
+                onReadyToDisplay = {
+                    galleryLoading = false
+                    galleryOpened = true
+                }
+            )
+        }
+    }
 
     Row(modifier = Modifier
         .clickable(
@@ -77,12 +109,13 @@ fun DiaryHolder(diary: Diary, onClick: (String) -> Unit) {
                         galleryOpened = galleryOpened,
                         onClick = {
                             galleryOpened = !galleryOpened
-                        }
+                        },
+                        galleryLoading = galleryLoading
                     )
                 }
 
                 AnimatedVisibility(
-                    visible = galleryOpened,
+                    visible = galleryOpened && !galleryLoading,
                     enter = fadeIn() + expandVertically(
                         animationSpec = spring(
                             dampingRatio = Spring.DampingRatioMediumBouncy,
@@ -91,7 +124,7 @@ fun DiaryHolder(diary: Diary, onClick: (String) -> Unit) {
                     )
                 ) {
                     Column(modifier = Modifier.padding(all = 14.dp)) {
-                        Gallery(images = diary.images)
+                        Gallery(images = downloadedImages)
                     }
                 }
             }
@@ -138,16 +171,19 @@ fun DiaryHeader(moodName: String, time: Instant) {
 @Composable
 fun ShowGalleryButton(
     galleryOpened: Boolean,
+    galleryLoading: Boolean,
     onClick: () -> Unit
 ) {
     TextButton(onClick = onClick) {
         Text(
-            text = if (galleryOpened) "Hide Gallery"
+            text = if (galleryOpened)
+                if (galleryLoading) "Loading" else "Hide Gallery"
             else "Show Gallery",
             style = TextStyle(fontSize = MaterialTheme.typography.bodySmall.fontSize)
         )
     }
 }
+
 
 @Composable
 @Preview

@@ -22,12 +22,14 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.avicodes.deardiary.model.Diary
+import com.avicodes.deardiary.model.GalleryImage
 import com.avicodes.deardiary.model.GalleryState
 import com.avicodes.deardiary.model.Mood
 import com.avicodes.deardiary.presentation.components.GalleryUploader
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
+import io.realm.kotlin.ext.toRealmList
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class, ExperimentalMaterial3Api::class)
@@ -42,7 +44,8 @@ fun WriteContent(
     paddingValues: PaddingValues,
     onSaveClicked: (Diary) -> Unit,
     galleryState: GalleryState,
-    onImageSelect: (Uri) -> Unit
+    onImageSelect: (Uri) -> Unit,
+    onImageClicked: (GalleryImage) -> Unit
 ) {
     val scrollState = rememberScrollState()
     val context = LocalContext.current
@@ -140,12 +143,10 @@ fun WriteContent(
             GalleryUploader(
                 galleryState = galleryState,
                 onAddClicked = {
-
+                    focusManager.clearFocus()
                 },
                 onImageSelect = onImageSelect,
-                onImageClicked = {
-
-                }
+                onImageClicked = onImageClicked
             )
             Spacer(modifier = Modifier.height(12.dp))
             Button(
@@ -158,6 +159,7 @@ fun WriteContent(
                             Diary().apply {
                                 this.title = uiState.title
                                 this.description = uiState.description
+                                this.images = galleryState.images.map { it.remoteImagePath }.toRealmList()
                             }
                         )
                     } else {
