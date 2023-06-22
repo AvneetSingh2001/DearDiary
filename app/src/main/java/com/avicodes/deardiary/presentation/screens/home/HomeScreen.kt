@@ -149,6 +149,24 @@ fun NavigationDrawer(
                         selected = false,
                         onClick = onDeleteAllClicked
                     )
+                    NavigationDrawerItem(
+                        label = {
+                            Row(modifier = Modifier.padding(horizontal = 12.dp)) {
+                                Icon(
+                                    imageVector = Icons.Default.Delete,
+                                    contentDescription = "Delete All Icon",
+                                    tint = MaterialTheme.colorScheme.onSurface
+                                )
+                                Spacer(modifier = Modifier.width(12.dp))
+                                Text(
+                                    text = "Delete All Diaries",
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                            }
+                        },
+                        selected = false,
+                        onClick = onDeleteAllClicked
+                    )
                 }
             )
         },

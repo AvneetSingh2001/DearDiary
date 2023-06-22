@@ -2,6 +2,7 @@ package com.avicodes.deardiary.di
 
 import android.content.Context
 import androidx.room.Room
+import com.avicodes.deardiary.connectivity.NetworkConnectivityObserver
 import com.avicodes.deardiary.data.database.ImagesDatabase
 import com.avicodes.deardiary.utils.Constants.IMAGES_DATABASE
 import dagger.Module
@@ -33,4 +34,10 @@ object DatabaseModule {
     @Singleton
     @Provides
     fun provideImageToDeleteDao(database: ImagesDatabase) = database.imageToDeleteDao()
+
+    @Singleton
+    @Provides
+    fun provideNetworkConnectivityObserver(
+        @ApplicationContext context: Context
+    ) = NetworkConnectivityObserver(context = context)
 }
