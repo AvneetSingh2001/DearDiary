@@ -169,7 +169,14 @@ fun NavGraphBuilder.homeRoute(
                 signOutDialogOpened = true
             },
             drawerState = drawerState,
-            navigateToWriteWithArgs = navigateToWriteWithArgs
+            navigateToWriteWithArgs = navigateToWriteWithArgs,
+            dateIsSelected = viewModel.dateIsSelected,
+            onDateSelected = {
+                viewModel.getDiaries(zonedDateTime = it)
+            },
+            onDateReset =  {
+                viewModel.getDiaries()
+            }
         )
 
         DisplayAlertDialog(
