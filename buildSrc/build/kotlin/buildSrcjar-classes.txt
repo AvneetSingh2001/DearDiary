@@ -1,0 +1,1 @@
+/Users/avimanak/Desktop/android/DearDiary/buildSrc/build/classes/kotlin/main/ProjectConfig.class

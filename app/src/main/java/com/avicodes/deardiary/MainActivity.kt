@@ -3,28 +3,22 @@ package com.avicodes.deardiary
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.net.toUri
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
-import com.avicodes.deardiary.data.database.dao.ImageToDeleteDao
-import com.avicodes.deardiary.data.database.dao.ImageToUploadDao
-import com.avicodes.deardiary.data.repository.MongoDB
-import com.avicodes.deardiary.navigation.Screen
 import com.avicodes.deardiary.navigation.SetUpNavGraph
-import com.avicodes.deardiary.ui.theme.DearDiaryTheme
-import com.avicodes.deardiary.utils.Constants.APP_ID
-import com.avicodes.deardiary.utils.retryDeletingImageFromFirebase
-import com.avicodes.deardiary.utils.retryUploadingImageToFirebase
+import com.avicodes.ui.theme.DearDiaryTheme
+import com.avicodes.mongo.database.dao.ImageToDeleteDao
+import com.avicodes.mongo.database.dao.ImageToUploadDao
+import com.avicodes.mongo.database.entitiy.ImageToDelete
+import com.avicodes.mongo.database.entitiy.ImageToUpload
+import com.avicodes.util.Constants.APP_ID
+import com.avicodes.util.Screen
 import com.google.firebase.FirebaseApp
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storageMetadata
 import dagger.hilt.android.AndroidEntryPoint
 import io.realm.kotlin.mongodb.App
 import kotlinx.coroutines.CoroutineScope
@@ -107,4 +101,25 @@ private fun getStartDestination(): String {
     val user = App.create(APP_ID).currentUser
     return if (user != null && user.loggedIn) Screen.Home.route
     else Screen.Authentication.route
+}
+
+fun retryUploadingImageToFirebase(
+    imageToUpload: ImageToUpload,
+    onSuccess: () -> Unit
+) {
+    val storage = FirebaseStorage.getInstance().reference
+    storage.child(imageToUpload.remoteImagePath).putFile(
+        imageToUpload.imageUri.toUri(),
+        storageMetadata { },
+        imageToUpload.sessionUri.toUri()
+    ).addOnSuccessListener { onSuccess() }
+}
+
+fun retryDeletingImageFromFirebase(
+    imageToDelete: ImageToDelete,
+    onSuccess: () -> Unit
+) {
+    val storage = FirebaseStorage.getInstance().reference
+    storage.child(imageToDelete.remoteImagePath).delete()
+        .addOnSuccessListener { onSuccess() }
 }

@@ -20,12 +20,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.avicodes.ui.GalleryImage
+import com.avicodes.ui.GalleryState
+import com.avicodes.util.model.Diary
+import com.avicodes.util.model.Mood
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
-import com.avicodes.deardiary.model.Diary
-import com.avicodes.deardiary.model.GalleryImage
-import com.avicodes.deardiary.model.GalleryState
-import com.avicodes.deardiary.model.Mood
 import java.time.ZonedDateTime
 
 @OptIn(ExperimentalPagerApi::class)

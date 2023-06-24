@@ -8,13 +8,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.avicodes.deardiary.connectivity.ConnectivityObserver
-import com.avicodes.deardiary.connectivity.NetworkConnectivityObserver
-import com.avicodes.deardiary.data.database.dao.ImageToDeleteDao
-import com.avicodes.deardiary.data.database.entitiy.ImageToDelete
+import com.avicodes.util.connectivity.ConnectivityObserver
+import com.avicodes.util.connectivity.NetworkConnectivityObserver
 import com.avicodes.deardiary.data.repository.Diaries
-import com.avicodes.deardiary.data.repository.MongoDB
-import com.avicodes.deardiary.model.RequestState
+import com.avicodes.mongo.database.dao.ImageToDeleteDao
+import com.avicodes.mongo.database.entitiy.ImageToDelete
+import com.avicodes.mongo.repository.MongoDB
+import com.avicodes.util.model.RequestState
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,7 +26,6 @@ import kotlinx.coroutines.withContext
 import java.time.ZonedDateTime
 import javax.inject.Inject
 
-@RequiresApi(Build.VERSION_CODES.N)
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val connectivity: NetworkConnectivityObserver,

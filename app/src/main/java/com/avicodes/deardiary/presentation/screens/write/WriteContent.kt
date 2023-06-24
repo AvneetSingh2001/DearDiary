@@ -13,7 +13,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -21,11 +20,11 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.avicodes.deardiary.model.Diary
-import com.avicodes.deardiary.model.GalleryImage
-import com.avicodes.deardiary.model.GalleryState
-import com.avicodes.deardiary.model.Mood
-import com.avicodes.deardiary.presentation.components.GalleryUploader
+import com.avicodes.ui.GalleryImage
+import com.avicodes.ui.GalleryState
+import com.avicodes.util.GalleryUploader
+import com.avicodes.util.model.Diary
+import com.avicodes.util.model.Mood
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState

@@ -19,7 +19,7 @@ import com.avicodes.deardiary.data.repository.Diaries
 import com.avicodes.deardiary.presentation.screens.home.EmptyPage
 import com.avicodes.deardiary.presentation.screens.home.HomeContent
 import com.avicodes.deardiary.presentation.screens.home.HomeTopBar
-import com.avicodes.deardiary.model.RequestState
+import com.avicodes.util.model.RequestState
 import java.time.ZonedDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)

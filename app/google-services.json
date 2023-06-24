@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "553129017116",
+    "project_id": "upbeat-plating-289311",
+    "storage_bucket": "upbeat-plating-289311.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:553129017116:android:bd3f07995a626528b384d9",
+        "android_client_info": {
+          "package_name": "com.avicodes.deardiary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "553129017116-d6ac0o1fltq4iinmbgjkshu1bgmmfhbq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3Ka-YA4LggKrKmctTzTSxCeS65yLeYdU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "553129017116-05sk942dtc5hio497kbpo4l72r048nvt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
