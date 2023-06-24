@@ -1,5 +1,6 @@
 package com.avicodes.mongo.repository
 
+import android.annotation.SuppressLint
 import com.avicodes.deardiary.data.repository.Diaries
 import com.avicodes.deardiary.data.repository.MongoRepository
 import com.avicodes.util.Constants.APP_ID
@@ -46,6 +47,7 @@ object MongoDB: MongoRepository {
         }
     }
 
+    @SuppressLint("NewApi")
     override fun getAllDiaries(): Flow<Diaries> {
         return if (user != null) {
             try {
@@ -155,6 +157,7 @@ object MongoDB: MongoRepository {
             RequestState.Error(UserNotAuthenticatedException())
         }
     }
+    @SuppressLint("NewApi")
     override fun getFilteredDiaries(zonedDateTime: ZonedDateTime): Flow<Diaries> {
         return if (user != null) {
             try {

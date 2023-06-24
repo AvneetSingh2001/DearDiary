@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.avicodes.ui.components.GoogleButton
 
 @Composable
-fun AuthenticationContent(
+internal fun AuthenticationContent(
     loadingState: Boolean,
     onButtonClicked: () -> Unit
 ) {

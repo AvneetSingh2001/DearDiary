@@ -20,7 +20,7 @@ import java.lang.Exception
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun AuthenticationScreen(
+internal fun AuthenticationScreen(
     authenticated: Boolean,
     loadingState: Boolean,
     oneTapSignInState: OneTapSignInState,
