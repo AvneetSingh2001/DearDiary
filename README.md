@@ -16,7 +16,7 @@ Here's an overview of the app's architectural modular components:
 - **Feature Modules**: This module includes three destinations: Auth, Home and Write. 'Auth' handles the authentication with the users. 'Home' displays all the data/diaries in our application. And 'Write' module allows you to create a new diary note in your app.
 
 ### Navigation
-The app has :three: screen destinations which use Compose Navigation to manage navigation.
+The app has 3 screen destinations which use Compose Navigation to manage navigation.
 
 | :feature:auth                                                                                               | :feature:home                                                                                               | :feature:write                                                                                              |
 |-------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|
